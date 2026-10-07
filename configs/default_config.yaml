@@ -1,0 +1,86 @@
+# AI-Assisted NDT Radiographic Weld Inspection Configuration
+
+system:
+  name: "Radiographic Weld Defect Inspection System"
+  version: "0.1.0"
+  description: "Modular AI pipeline for NDT weld defect detection, classification, segmentation, and quantification."
+
+# Image Preprocessing Configuration
+preprocessing:
+  # Contrast Limited Adaptive Histogram Equalization (CLAHE)
+  clahe:
+    clip_limit: 2.5           # Threshold for contrast limiting (typical RT range: 1.5 - 4.0)
+    tile_grid_size: [8, 8]     # Size of grid for histogram equalization [width, height]
+  
+  # Denoising
+  denoising:
+    enabled: true
+    method: "bilateral"       # Options: "bilateral", "gaussian", "median", "nlm"
+    params:
+      bilateral:
+        d: 7                  # Diameter of pixel neighborhood
+        sigma_color: 50       # Filter sigma in color space
+        sigma_space: 50       # Filter sigma in coordinate space
+      gaussian:
+        kernel_size: [5, 5]
+        sigma_x: 1.0
+      median:
+        kernel_size: 5
+      nlm:
+        h: 10                 # Filter strength for Non-Local Means
+        template_window_size: 7
+        search_window_size: 21
+
+  # Intensity normalization
+  normalization:
+    enabled: true
+    target_min: 0
+    target_max: 255
+
+# Future Module Configurations (Staged for subsequent phases)
+detection:
+  model_name: "YOLOv8"
+  weights_path: "models/detection/yolov8_weld_defect.pt"
+  confidence_threshold: 0.40
+  iou_threshold: 0.45
+  classes:
+    - code: "CR"
+      name: "Crack"
+      severity: "Critical"
+    - code: "PO"
+      name: "Porosity"
+      severity: "Moderate"
+    - code: "LP"
+      name: "Lack of Penetration"
+      severity: "Critical"
+    - code: "ND"
+      name: "No Defect"
+      severity: "None"
+
+segmentation:
+  architecture: "U-Net"
+  encoder: "ResNet34"
+  weights_path: "models/segmentation/unet_resnet34_weld.pth"
+  input_resolution: [512, 512]
+  num_classes: 4
+
+measurement:
+  calibration:
+    pixel_to_mm_ratio: 0.1    # Default 1 pixel = 0.1 mm (configurable per radiograph)
+  metrics:
+    - "length"
+    - "width"
+    - "area"
+    - "aspect_ratio"
+    - "centroid"
+    - "orientation_angle"
+
+explainability:
+  method: "Grad-CAM"
+  target_layer: "encoder.layer4"
+  colormap: "JET"
+
+ui:
+  theme: "dark"
+  default_sample: "crack_sample.png"
+  port: 8501

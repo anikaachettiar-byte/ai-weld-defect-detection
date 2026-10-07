@@ -1,0 +1,28 @@
+# ==============================================================================
+# AI-Assisted NDT Radiographic Weld Inspection System
+# ==============================================================================
+
+# Core Dependencies (Phase 1: Preprocessing & Prototype UI) - INSTALLED
+numpy>=1.26.0
+opencv-python>=4.8.0
+pillow>=10.0.0
+matplotlib>=3.8.0
+streamlit>=1.30.0
+pyyaml>=6.0.1
+pytest>=8.0.0
+
+# Future Dependencies (Staged for Subsequent Phases)
+# Uncomment as modules are implemented:
+
+# --- Phase 2: YOLOv8 Weld Defect Detection ---
+# ultralytics>=8.1.0
+
+# --- Phase 3 & 4: U-Net ResNet34 Segmentation & PyTorch ---
+# torch>=2.2.0
+# torchvision>=0.17.0
+# segmentation-models-pytorch>=0.3.3
+# albumentations>=1.3.1
+# scipy>=1.11.0
+
+# --- Phase 5: Explainability (Grad-CAM) ---
+# grad-cam>=1.5.0

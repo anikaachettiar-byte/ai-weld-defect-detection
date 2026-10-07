@@ -4,11 +4,12 @@
 
 # Core Dependencies (Phase 1: Preprocessing & Prototype UI) - INSTALLED
 numpy>=1.26.0
-opencv-python>=4.8.0
+opencv-python-headless>=4.8.0
 pillow>=10.0.0
 matplotlib>=3.8.0
 streamlit>=1.30.0
 pyyaml>=6.0.1
+pandas>=2.0.0
 pytest>=8.0.0
 
 # Future Dependencies (Staged for Subsequent Phases)
